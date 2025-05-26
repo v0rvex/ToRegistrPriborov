@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ТО регистрационных приборов: неисправности и обслуживание</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #1a252f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+        body {
+            overflow-x: hidden;
+            background-color: var(--light);
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            min-height: 100vh;
+            padding: 80px 10%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide:nth-child(odd) {
+            background-color: white;
+        }
+
+        .slide:nth-child(even) {
+            background-color: var(--light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease 0.2s;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease 0.4s;
+        }
+
+        .active h1,
+        .active h2,
+        .active p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .issue-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 20px 0;
+            transform: scale(0.95);
+            opacity: 0;
+            transition: all 0.8s ease;
+        }
+
+        .active .issue-card {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .issue-card:nth-child(1) { transition-delay: 0.1s; }
+        .issue-card:nth-child(2) { transition-delay: 0.3s; }
+        .issue-card:nth-child(3) { transition-delay: 0.5s; }
+
+        .issue-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .issue-header i {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            color: var(--accent);
+        }
+
+        .issue-content {
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .issue-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .issue-image {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .issue-image img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.5s ease;
+        }
+
+        .issue-image img:hover {
+            transform: scale(1.05);
+        }
+
+        .solution {
+            background: var(--light);
+            padding: 15px;
+            border-left: 4px solid var(--secondary);
+            margin-top: 15px;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .solution h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .solution h4 i {
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--secondary);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            margin-top: 20px;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease 0.6s;
+        }
+
+        .active .btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(41, 128, 185, 0.4);
+        }
+
+        .nav-dots {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(52, 152, 219, 0.3);
+            border-radius: 50%;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        ol {
+            padding-left: 20px;
+        }
+
+        .dot.active {
+            background: var(--secondary);
+            transform: scale(1.3);
+        }
+
+        .floating-icon {
+            position: absolute;
+            font-size: 10rem;
+            color: rgba(44, 62, 80, 0.05);
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 80px 5%;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            .issue-content {
+                flex-direction: column;
+            }
+            
+            .issue-text, .issue-image {
+                min-width: 100%;
+            }
+            
+            .nav-dots {
+                right: 15px;
+            }
+            
+            .floating-icon {
+                font-size: 6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-dots">
+        <div class="dot active" data-slide="0"></div>
+        <div class="dot" data-slide="1"></div>
+        <div class="dot" data-slide="2"></div>
+        <div class="dot" data-slide="3"></div>
+        <div class="dot" data-slide="4"></div>
+    </div>
+
+    <section class="slide active" id="slide1">
+        <div class="floating-icon" style="top: 10%; left: 5%;"><i class="fas fa-tools"></i></div>
+        <div class="floating-icon" style="bottom: 15%; right: 5%;"><i class="fas fa-cog"></i></div>
+        
+        <div class="container">
+            <h1>Техническое обслуживание регистрационных приборов</h1>
+            <h2>Типичные неисправности и методы их устранения</h2>
+            <p>В этой презентации рассмотрим конкретные примеры неисправностей регистрационных приборов и способы их устранения с пошаговыми инструкциями.</p>
+            <a href="#slide2" class="btn">Начать обзор</a>
+        </div>
+    </section>
+
+    <section class="slide" id="slide2">
+        <div class="floating-icon" style="top: 20%; right: 10%;"><i class="fas fa-bolt"></i></div>
+        
+        <div class="container">
+            <h1>1. Проблемы с питанием</h1>
+            <h2>Неисправности электропитания регистраторов</h2>
+            
+            <div class="issue-card">
+                <div class="issue-header">
+                    <i class="fas fa-plug"></i>
+                    <h3>Прибор не включается</h3>
+                </div>
+                <div class="issue-content">
+                    <div class="issue-text">
+                        <p><strong>Симптомы:</strong> Полное отсутствие реакции на кнопку включения, нет индикации.</p>
+                        <p><strong>Возможные причины:</strong> Обрыв кабеля питания, неисправность блока питания, перегоревший предохранитель.</p>
+                        
+                        <div class="solution">
+                            <h4><i class="fas fa-wrench"></i>Решение:</h4>
+                            <ol>
+                                <li> Проверить напряжение в розетке тестером</li>
+                                <li> Осмотреть кабель питания на предмет повреждений</li>
+                                <li> Проверить предохранитель (при наличии)</li>
+                                <li> Тестировать с заведомо исправным блоком питания</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="issue-card">
+                <div class="issue-header">
+                    <i class="fas fa-battery-quarter"></i>
+                    <h3>Самопроизвольное отключение</h3>
+                </div>
+                <div class="issue-content">
+                    <div class="issue-text">
+                        <p><strong>Симптомы:</strong> Прибор периодически отключается во время работы.</p>
+                        <p><strong>Возможные причины:</strong> Перегрев блока питания, нестабильное входное напряжение, плохой контакт.</p>
+                        
+                        <div class="solution">
+                            <h4><i class="fas fa-wrench"></i>Решение:</h4>
+                            <ol>
+                                <li> Проверить стабильность входного напряжения</li>
+                                <li> Очистить вентиляционные отверстия от пыли</li>
+                                <li> Проверить все соединения на надежность</li>
+                                <li> Заменить блок питания при необходимости</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="#slide3" class="btn">Следующая проблема</a>
+        </div>
+    </section>
+
+    <section class="slide" id="slide3">
+        <div class="floating-icon" style="bottom: 20%; left: 10%;"><i class="fas fa-chart-line"></i></div>
+        
+        <div class="container">
+            <h1>2. Проблемы с датчиками</h1>
+            <h2>Неисправности измерительных каналов</h2>
+            
+            <div class="issue-card">
+                <div class="issue-header">
+                    <i class="fas fa-ruler"></i>
+                    <h3>Некорректные показания</h3>
+                </div>
+                <div class="issue-content">
+                    <div class="issue-text">
+                        <p><strong>Симптомы:</strong> Прибор показывает неверные значения, отличающиеся от эталонных.</p>
+                        <p><strong>Возможные причины:</strong> Загрязнение датчика, нарушение калибровки, повреждение измерительной цепи.</p>
+                        
+                        <div class="solution">
+                            <h4><i class="fas fa-wrench"></i>Решение:</h4>
+                            <ol>
+                                <li> Очистить чувствительный элемент датчика</li>
+                                <li> Проверить соединения датчика с прибором</li>
+                                <li> Выполнить калибровку по методике производителя</li>
+                                <li> Заменить датчик при невозможности калибровки</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="issue-card">
+                <div class="issue-header">
+                    <i class="fas fa-times-circle"></i>
+                    <h3>Отсутствие сигнала с датчика</h3>
+                </div>
+                <div class="issue-content">
+                    <div class="issue-text">
+                        <p><strong>Симптомы:</strong> Прибор не получает данные с одного или нескольких датчиков.</p>
+                        <p><strong>Возможные причины:</strong> Обрыв линии связи, неисправность датчика, неправильные настройки.</p>
+                        
+                        <div class="solution">
+                            <h4><i class="fas fa-wrench"></i>Решение:</h4>
+                            <ol>
+                                <li> Проверить целостность кабеля датчика</li>
+                                <li> Убедиться в правильности подключения</li>
+                                <li> Проверить питание датчика</li>
+                                <li> Тестировать с заведомо исправным датчиком</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="#slide4" class="btn">Следующая проблема</a>
+        </div>
+    </section>
+
+    <section class="slide" id="slide4">
+        <div class="floating-icon" style="top: 15%; right: 15%;"><i class="fas fa-save"></i></div>
+        
+        <div class="container">
+            <h1>3. Проблемы с сохранением данных</h1>
+            <h2>Неисправности систем записи и хранения</h2>
+            
+            <div class="issue-card">
+                <div class="issue-header">
+                    <i class="fas fa-database"></i>
+                    <h3>Потеря архивных данных</h3>
+                </div>
+                <div class="issue-content">
+                    <div class="issue-text">
+                        <p><strong>Симптомы:</strong> Пропажа ранее записанных данных, "провалы" в архиве.</p>
+                        <p><strong>Возможные причины:</strong> Сбой внутренней памяти, неисправность накопителя, ошибки ПО.</p>
+                        
+                        <div class="solution">
+                            <h4><i class="fas fa-wrench"></i>Решение:</h4>
+                            <ol>
+                                <li> Проверить состояние встроенной батареи (если есть)</li>
+                                <li> Выполнить тестирование накопителя</li>
+                                <li> Обновить прошивку прибора</li>
+                                <li> Заменить накопитель при необходимости</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="issue-card">
+                <div class="issue-header">
+                    <i class="fas fa-file-export"></i>
+                    <h3>Ошибки экспорта данных</h3>
+                </div>
+                <div class="issue-content">
+                    <div class="issue-text">
+                        <p><strong>Симптомы:</strong> Невозможность выгрузить данные на внешний носитель.</p>
+                        <p><strong>Возможные причины:</strong> Неисправность USB-порта, повреждение файловой системы, ошибки ПО.</p>
+                        
+                        <div class="solution">
+                            <h4><i class="fas fa-wrench"></i>Решение:</h4>
+                            <ol>
+                                <li> Попробовать другой USB-носитель</li>
+                                <li> Очистить контакты USB-порта</li>
+                                <li> Выполнить проверку файловой системы</li>
+                                <li> Обновить прошивку прибора</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="#slide5" class="btn">Завершить просмотр</a>
+        </div>
+    </section>
+
+    <section class="slide" id="slide5">
+        <div class="floating-icon" style="top: 20%; left: 10%;"><i class="fas fa-clipboard-check"></i></div>
+        <div class="floating-icon" style="bottom: 15%; right: 10%;"><i class="fas fa-file-alt"></i></div>
+        
+        <div class="container">
+            <h1>Профилактика неисправностей</h1>
+            <h2>Рекомендации по техническому обслуживанию</h2>
+            
+            <div class="issue-card">
+                <div class="issue-header">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>Плановое ТО</h3>
+                </div>
+                <div class="issue-content">
+                    <div class="issue-text">
+                        <p><strong>Периодичность:</strong> Рекомендуется проводить техническое обслуживание каждые 6 месяцев.</p>
+                        
+                        <div class="solution">
+                            <h4><i class="fas fa-tasks"></i>Чек-лист планового ТО:</h4>
+                            <ol>
+                                <li> Внешний осмотр на повреждения</li>
+                                <li> Очистка от пыли и загрязнений</li>
+                                <li> Проверка всех соединений</li>
+                                <li> Контрольная калибровка</li>
+                                <li> Тестирование функций</li>
+                                <li> Проверка архива данных</li>
+                                <li> Обновление ПО (при необходимости)</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="#slide1" class="btn">На главную</a>
+        </div>
+    </section>
+
+    <script>
+        // Анимация при скролле
+        function checkSlide() {
+            const slides = document.querySelectorAll('.slide');
+            const triggerBottom = window.innerHeight * 0.8;
+            
+            slides.forEach(slide => {
+                const slideTop = slide.getBoundingClientRect().top;
+                
+                if (slideTop < triggerBottom) {
+                    slide.classList.add('active');
+                }
+            });
+        }
+
+        // Навигация по точкам
+        const dots = document.querySelectorAll('.dot');
+        dots.forEach(dot => {
+            dot.addEventListener('click', function() {
+                const slideIndex = this.getAttribute('data-slide');
+                const targetSlide = document.querySelectorAll('.slide')[slideIndex];
+                
+                window.scrollTo({
+                    top: targetSlide.offsetTop,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Обновление активной точки при скролле
+        function updateActiveDot() {
+            const slides = document.querySelectorAll('.slide');
+            const scrollPosition = window.scrollY + window.innerHeight / 2;
+            
+            slides.forEach((slide, index) => {
+                const slideTop = slide.offsetTop;
+                const slideHeight = slide.offsetHeight;
+                
+                if (scrollPosition >= slideTop && scrollPosition < slideTop + slideHeight) {
+                    dots.forEach(dot => dot.classList.remove('active'));
+                    dots[index].classList.add('active');
+                }
+            });
+        }
+
+        // Обработчики событий
+        window.addEventListener('scroll', () => {
+            checkSlide();
+            updateActiveDot();
+        });
+
+        // Инициализация
+        window.addEventListener('load', () => {
+            checkSlide();
+            updateActiveDot();
+        });
+    </script>
+</body>
+</html>
